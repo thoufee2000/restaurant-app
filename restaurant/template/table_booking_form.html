@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Book A Table Section -->
+<section id="book-a-table" class="book-a-table section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Reservation</h2>
+        <p><span>Book Your</span> <span class="description-title">Stay With Us<br></span></p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+        <div class="row g-0 shadow" data-aos="fade-up" data-aos-delay="100">
+            <!-- Reservation Image -->
+            <div class="col-lg-4 reservation-img" style="background-image: url({% static 'assets/img/reservation.jpg' %});">
+            </div>
+
+            <!-- Reservation Form -->
+            <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row gy-4">
+                        <div class="col-lg-4 col-md-6">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control" id="name" value="{{user.username}}" placeholder="Enter Name" required>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{user.email}}" id="email" placeholder="Enter Email" required>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter Phone" required>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label for="date">Reservation Date</label>
+                            <input type="date" name="date" class="form-control" id="date" placeholder="Enter Date" required min="">
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label for="time-slot">Select Time Slot</label>
+                            <select id="time-slot" name="time_slot" class="form-control" required>
+                                <option value="12:00-1:00pm">12:00-1:00 PM</option>
+                                <option value="1:00-2:00pm">1:00-2:00 PM</option>
+                                <option value="2:00-3:00pm">2:00-3:00 PM</option>
+                                <option value="6:00-7:00pm">6:00-7:00 PM</option>
+                                <option value="7:00-8:00pm">7:00-8:00 PM</option>
+                                <option value="8:00-9:00pm">8:00-9:00 PM</option>
+                                <option value="9:00-10:00pm">9:00-10:00 PM</option>
+                                <option value="10:00-11:00pm">10:00-11:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3 header">
+                        <button type="submit" class="btn-getstarted">Book</button>
+                    </div>
+                    <p style="color:red; text-align: center;">* ₹200 for one table reservation</p>
+                </form>
+            </div><!-- End Reservation Form -->
+
+        </div>
+
+    </div>
+
+    <script>
+        // Set today's date as the minimum selectable date
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+        });
+    </script>
+</section>
+
+
+<!-- Book A Table Section-->
+<!--    <section id="book-a-table" class="book-a-table section">-->
+
+<!--      &lt;!&ndash; Section Title &ndash;&gt;-->
+<!--      <div class="container section-title" data-aos="fade-up">-->
+<!--        <h2>Reservation</h2>-->
+<!--        <p><span>Book Your</span> <span class="description-title">Stay With Us<br></span></p>-->
+<!--      </div>&lt;!&ndash; End Section Title &ndash;&gt;-->
+
+<!--      <div class="container">-->
+
+<!--        <div class="row g-0 shadow" data-aos="fade-up" data-aos-delay="100">-->
+
+<!--          <div class="col-lg-4 reservation-img" style="background-image: url({% static 'assets/img/reservation.jpg' %});"></div>-->
+
+<!--          <div class="col-lg-8 d-flex align-items-center reservation-form-bg " data-aos="fade-up" data-aos-delay="200">-->
+<!--            <form method="post">-->
+<!--              {% csrf_token %}-->
+<!--              <div class="row gy-4">-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                  <input type="text" name="name" class="form-control" id="name" value="{{user.username}}" placeholder="Enter Name" required="">-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                  <input type="email" class="form-control" name="email" value="{{user.email}}" id="email" placeholder="Enter Email" required="">-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                  <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter Phone" required="">-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                  <input type="date" name="date" class="form-control" id="date" placeholder="Enter Date" required="" min="">-->
+<!--                </div>-->
+<!--                <div class="col-lg-4 col-md-6">-->
+<!--                    <label for="time-slot">Select Time Slot</label>-->
+<!--                    <select id="time-slot" name="time_slot" required>-->
+<!--                        <option value="12:00-1:00pm">12:00-1:00 PM</option>-->
+<!--                        <option value="1:00-2:00pm">1:00-2:00 PM</option>-->
+<!--                        <option value="2:00-3:00pm">2:00-3:00 PM</option>-->
+<!--                        <option value="6:00-7:00pm">6:00-7:00 PM</option>-->
+<!--                        <option value="7:00-8:00pm">7:00-8:00 PM</option>-->
+<!--                        <option value="8:00-9:00pm">8:00-9:00 PM</option>-->
+<!--                        <option value="9:00-10:00pm">9:00-10:00 PM</option>-->
+<!--                        <option value="10:00-11:00pm">10:00-11:00 PM</option>-->
+<!--                    </select>-->
+
+<!--                </div>-->
+<!--&lt;!&ndash;                <div class="col-lg-4 col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <input type="number" class="form-control" name="people" id="people"  placeholder="Enter No: of people" required="">&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--              </div>-->
+
+<!--              <div class="text-center mt-3 header">-->
+<!--                <button type="submit" class="btn-getstarted">Book</button>-->
+<!--              </div>-->
+<!--                <p style="color:red">* ₹200 for one table reservation</p>-->
+<!--            </form>-->
+
+<!--          </div>&lt;!&ndash; End Reservation Form &ndash;&gt;-->
+
+<!--        </div>-->
+
+<!--      </div>-->
+<!--        <script>-->
+<!--          // Set today's date as the minimum selectable date-->
+<!--          document.addEventListener('DOMContentLoaded', function() {-->
+<!--              var today = new Date().toISOString().split('T')[0];-->
+<!--              document.getElementById('date').setAttribute('min', today);-->
+<!--          });-->
+<!--        </script>-->
+<!--    </section>&lt;!&ndash; /Book A Table Section &ndash;&gt;-->
+
+
+
+<!-- /Book A Table Section -->
+{% endblock %}

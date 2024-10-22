@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!--<section id="menu" class="menu section">-->
+<!--    &lt;!&ndash; Section Title &ndash;&gt;-->
+<!--          <div class="container section-title" data-aos="fade-up">-->
+<!--            <h2>My Orders</h2>-->
+<!--            <p><span>Check Your</span> <span class="description-title">Orders and Bookings</span></p>-->
+<!--          </div>&lt;!&ndash; End Section Title &ndash;&gt;-->
+<!--    <div class="container">-->
+
+
+<!--        <div class="tab-content" data-aos="fade-up" data-aos-delay="200">-->
+
+<!--          <div class="tab-pane fade active show">-->
+
+<!--            <div class="tab-header text-center">-->
+<!--              <p></p>-->
+<!--            </div>-->
+<!--        <div class="row gy-5">-->
+<!--            {% for i in orders %}-->
+<!--                {% if orders %}-->
+<!--                      <div class="col-lg-4 menu-item">-->
+<!--                        <a href="" class="glightbox"><img src="{{i.dish.image.url}}" class="menu-img img-fluid" style="height:200px" alt=""></a>-->
+<!--                        <h4>{{i.dish.name}}</h4>-->
+
+<!--                        <p class="price">-->
+<!--                          ₹ {{i.dish.price}}-->
+<!--                        </p>-->
+<!--                          <p class="ingredients">-->
+<!--                             Ordered On: {{i.ordered_date}}-->
+<!--                        </p>-->
+<!--                          <div class="header">-->
+<!--                                  <a href="{% url 'cart:add_to_cart' i.dish.id %}" class="btn-getstarted">Reorder</a>-->
+<!--                              </div>-->
+<!--                      </div>-->
+<!--                {% else %}-->
+<!--                    <div class="container section-title" data-aos="fade-up">-->
+<!--                        <h2>My Orders</h2>-->
+<!--                        <p><span>NO</span> <span class="description-title">Orders</span></p>-->
+<!--                    </div>-->
+<!--                {% endif %}-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+
+<!--            <div class="row gy-5">-->
+<!--            {% for i in bookings %}-->
+<!--                {% if bookings %}-->
+<!--                    {% for table in i.table.all %}-->
+<!--                        <p class="ingredients">-->
+<!--                            <span class="fw-bold text-danger">TABLE:</span> {{table.table_name}}-->
+<!--                        </p>-->
+<!--                    {% endfor %}-->
+<!--                          <p class="ingredients">-->
+<!--                            <span class="fw-bold text-danger">BOOKED ON:</span> {{i.booked_date}}-->
+<!--                          </p>-->
+<!--                        <p class="ingredients">-->
+<!--                             <span class="fw-bold text-danger">SELECTED DATE:</span> {{i.date}}-->
+<!--                        </p>-->
+<!--                        <p class="ingredients">-->
+<!--                             <span class="fw-bold text-danger">SELECTED TIMESLOT:</span> {{i.time}}-->
+<!--                        </p>-->
+<!--&lt;!&ndash;                          <div class="header">&ndash;&gt;-->
+<!--&lt;!&ndash;                                  <a href="{% url 'cart:place_order' %}" class="btn-getstarted">Reorder</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                              </div>&ndash;&gt;-->
+<!--                      </div>-->
+<!--                {% else %}-->
+<!--                    <div class="container section-title" data-aos="fade-up">-->
+<!--                        <h2>My Orders</h2>-->
+<!--                        <p><span>NO</span> <span class="description-title">booking</span></p>-->
+<!--                    </div>-->
+<!--                {% endif %}-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--            &lt;!&ndash; Menu Item &ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</section>-->
+
+<section id="orders" class="orders section">
+    <!-- Section Title -->
+    <div class="container section-title text-center" data-aos="fade-up">
+        <h2>My Orders & Bookings</h2>
+        <p>Check your recent <span class="description-title">orders and bookings</span></p>
+    </div>
+
+    <!-- Orders Section -->
+    <div class="container">
+        <!-- Orders Section -->
+        <div class="orders-section" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="text-center">Your Orders</h2>
+
+            <div class="row gy-5 justify-content-center">
+                {% if orders %}
+                    {% for i in orders %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card menu-item shadow-sm">
+                            <a href="" class="glightbox">
+                                <img src="{{ i.dish.image.url }}" class="card-img-top img-fluid" style="height: 250px;" alt="{{ i.dish.name }}">
+                            </a>
+                            <div class="card-body">
+                                <h3 class="card-title">{{ i.dish.name }}</h3>
+                                <p class="price text-success">₹ {{ i.dish.price }}</p>
+                                <p class="ingredients text-muted">Ordered on: {{ i.ordered_date }}</p>
+                                <a href="{% url 'cart:add_to_cart' i.dish.id %}" class="btn btn-danger">Reorder</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="col-12 text-center">
+                    <h4 class="text-danger">No Orders Found</h4>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Bookings Section -->
+        <div class="bookings-section mt-5" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="text-center">Your Bookings</h2>
+
+            <div class="row gy-5 justify-content-center">
+                {% if bookings %}
+                    {% for i in bookings %}
+                    <div class="col-lg-6 col-md-8">
+                        <div class="card booking-item shadow-sm p-3">
+                            <h4 class="text-danger">Booking Details</h4>
+                            <p><strong>Selected Date:</strong> {{ i.date }}</p>
+                            <p><strong>Selected Timeslot:</strong> {{ i.time }}</p>
+                            <p><strong>Booked on:</strong> {{ i.booked_date }}</p>
+                            <h5 class="fw-bold mt-2">Table(s):</h5>
+                            <ul class="list-unstyled">
+                                {% for table in i.table.all %}
+                                <li class="text-success">{{ table.table_name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="col-12 text-center">
+                    <h4 class="text-danger">No Bookings Found</h4>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
+
+
+

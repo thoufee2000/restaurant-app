@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="menu" class="menu section">
+    {% if dishes %}
+          <div class="container section-title" data-aos="fade-up">
+            <p><span>Search</span> <span class="description-title">Results</span></p>
+          </div>
+    {% else %}
+        <div class="container section-title" data-aos="fade-up">
+            <p><span>No</span> <span class="description-title">Results</span></p>
+          </div>
+    {% endif %}
+    <div class="container">
+
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+
+          <div class="tab-pane fade active show">
+        <div class="row gy-5">
+            {% for i in dishes %}
+              <div class="col-lg-4 menu-item">
+                <a href="" class="glightbox"><img src="{{i.image.url}}" class="menu-img img-fluid" style="height:200px" alt=""></a>
+                <h4>{{i.name}}</h4>
+                <p class="ingredients">
+                  {{i.desc}}
+                </p>
+                <p class="price">
+                  ₹ {{i.price}}
+                </p>
+                  {% if user.is_superuser %}
+                        <div class="header">
+                            <a href="{% url 'admin:index' %}" class="btn-getstarted">ADD</a>
+                        </div>
+                  {% elif user.is_authenticated %}
+                      <div class="header">
+                          <a href="{% url 'cart:add_to_cart' i.id %}" class="btn-getstarted">ADD</a>
+                      </div>
+                  {% else %}
+                      <div class="header">
+                          <a href="{% url 'shop:login' %}" class="btn-getstarted">ADD</a>
+                      </div>
+                  {% endif %}
+              </div>
+            {% endfor %}
+        </div>
+            <!-- Menu Item -->
+          </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,71 @@
+/* Table styling */
+.table-bordered {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.thead-light th {
+    background-color: #f8f9fa;
+    text-align: left;
+}
+
+.table td, .table th {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+/* Button Actions for Add/Remove */
+.btn-action {
+    margin: 5px;
+    color: #000;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.btn-action:hover {
+    color: #007bff;
+}
+
+/* Checkout Buttons */
+.btn-primary, .btn-secondary {
+    display: block;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .menu-item img {
+        width: 100%;
+        height: auto;
+    }
+
+    .btn-action {
+        font-size: 1.5rem;
+    }
+
+    .table {
+        width: 100%;
+    }
+
+    .table-bordered th, .table-bordered td {
+        padding: 10px;
+    }
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Book A Table Section -->
+    <section id="book-a-table" class="book-a-table section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>DON'T YOU LOGINED YET?</h2>
+        <p><span>LOGIN</span> <span class="description-title"><br> With Us</span></p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="col-lg-4 reservation-img" style="background-image: url({% static 'assets/img/reservation.jpg' %});"></div>
+
+          <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
+            <form method="post">
+                {% csrf_token %}
+              <div style="padding-left:100px">
+                  <div class="row gy-4 mx-5">
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" name="u" placeholder="Enter Username" class="form-control" style="width:150px">
+                    </div>
+                    <div class="col-lg-4 col-md-6" style="padding-left:100px">
+                      <input type="password" name="p" placeholder="Enter Password" class="form-control" style="width:150px">
+                    </div>
+                  </div>
+                <div class="text-center mt-5 " style="padding-right:30px">
+                  <button class="btn btn-danger">LOGIN</button>
+                </div>
+                <div class="mt-5 mx-3" style="padding-left:80px">
+                    <p data-aos="fade-up" data-aos-delay="100">Don't you have an account with us? <a href="{% url 'shop:register' %}">Register</a></p>
+                </div>
+              </div>
+
+              <div class="mt-3">
+                    {% if messages %}
+                      <ul class="messages">
+                        {% for message in messages %}
+                          <li style="color:red;">{{ message }}</li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+
+
+    </section><!-- /Book A Table Section -->
+{% endblock %}

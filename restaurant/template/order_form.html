@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+ <section id="book-a-table" class="book-a-table section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>payment</h2>
+          <p><span>Enter</span> <span class="description-title"><br> Details</span></p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row g-0" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="col-lg-4 reservation-img" style="background-image: url({% static 'assets/img/reservation.jpg' %});"></div>
+
+          <div class="col-lg-8 d-flex align-items-center reservation-form-bg" data-aos="fade-up" data-aos-delay="200">
+            <form method="post">
+                {% csrf_token %}
+                  <div class="row gy-4 mx-5">
+                    <div class="col-lg-4 col-md-6">
+                      <input type="number" name="ph" placeholder="Phone Number" class="form-control">
+                    </div>
+                      <div class="col-lg-4 col-md-6">
+                      <input type="text" name="ad" placeholder="Address" class="form-control">
+                    </div>
+                      <div class="col-lg-4 col-md-6">
+                      <input type="number" name="pin" placeholder="Pin" class="form-control">
+                    </div>
+                  </div>
+              <div class="text-center mt-5 ">
+                <button class="btn btn-danger">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+ </section>
+
+{% endblock %}

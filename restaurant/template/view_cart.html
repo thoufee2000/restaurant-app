@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="menu" class="menu section">
+	{% if cart %}
+		<div class="container section-title" data-aos="fade-up">
+			<p><span>Your</span> <span class="description-title">Cart</span></p>
+		</div>
+		<div class="row ml-3 container">
+				<div class="col-7">
+					<div class="container mt-5 pt-5">
+						<table class="table-bordered border border-3 shadow mb-5" style="width:500px">
+							<tr>
+								<th>Cart Items</th>
+								<th>Dish</th>
+								<th>Quantity</th>
+								<th>Unit Price</th>
+								<th>Subtotal</th>
+							</tr>
+						{% for i in cart %}
+							<tr>
+								<td><a href=""><img src="{{i.dish.image.url}}" height="200px" width="200px"></a></td>
+								<td>{{i.dish.name}}</td>
+								<td>{{i.quantity}}</td>
+								<td>{{i.dish.price}}</td>
+								<td>{{i.subtotal}}</td>
+								<td>
+										<a href="{% url 'cart:add_to_cart' i.dish.id %}"><i class="fa-solid fa-circle-plus" style="color:black"></i></a> <br>
+										<a href="{% url 'cart:decrement' i.dish.id %}"><i class="fa-solid fa-circle-minus" style="color:black"></i></a> <br>
+										<a href="{% url 'cart:remove_cart' i.dish.id %}"><i class="fa-solid fa-trash" style="color:black"></i></a>
+								</td>
+
+							</tr>
+						{% endfor %}
+						</table>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="container mt-5 pt-5">
+						<table class="table border border-3 shadow" style="width:50%;">
+							<tr>
+								<th>CheckOut</th>
+							</tr>
+							<tr>
+								<th>Total Amount : {{total}} </th>
+							</tr>
+						</table>
+						<div>
+							<a href="{% url 'cart:place_order' %}" class="btn-danger">Place Order</a><br><br>
+							<a class="btn-danger mt-3" href="{% url 'shop:menu' %}">Back To Menu</a>
+						</div>
+
+					</div>
+				</div>
+		</div>
+
+{% else %}
+	<div class="container section-title" data-aos="fade-up">
+		<p><span>No Items In Your</span> <span class="description-title">Cart</span></p>
+	</div>
+{% endif %}
+</section>
+
+{% endblock %}
