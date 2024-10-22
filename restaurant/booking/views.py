@@ -88,31 +88,12 @@ def payment_status(request,u):
 
             for i in tb:
                 i.payment_status = "paid"
-                for table_instance in i.table.all():  # Assuming ManyToMany relationship
+                for table_instance in i.table.all():  
                     table_instance.booking_status = "confirm"
                     table_instance.save()
                 i.save()
-
-            # phone_number = i.phone  # Get the user's phone number from the booking
-            # message_body = f"Thank you {i.name} for your booking. Your booking ID is {i.booking_id}. " \
-            #                f"Date: {i.date}, Time: {i.time} Table No: {table_instance.table_name}. We look forward to serving you!"
-            # send_sms(phone_number, message_body)
         except:
             pass
 
     return render(request,'payment_status.html')
 
-
-# from twilio.rest import Client
-# from django.conf import settings
-#
-#
-# def send_sms(to_number, message_body):
-#     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-#
-#     message = client.messages.create(
-#         body=message_body,
-#         from_=settings.TWILIO_PHONE_NUMBER,
-#         to=to_number
-#     )
-#     return message.sid
