@@ -3,6 +3,216 @@
 {% load static %}
 
 {% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
+
+    .booking-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .table {
+        padding: 20px;
+        text-align: center;
+        background-color: #f9f9f9;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .table.available:hover {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .table.selected {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table.booked {
+        background-color: #e3342f;
+        color: white;
+        cursor: not-allowed;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .submit-btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .cancel-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #e81610;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .cancel-btn:hover {
+        background-color: #ab322e;
+    }
+
+    .selected-tables {
+        margin-top: 20px;
+    }
+
+    .selected-tables ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .selected-tables ul li {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 4px;
+    }
+
+    .selected-tables h3 {
+        margin-bottom: 10px;
+    }
+
+    .info {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+</style>
+
+<section id="book-a-table" class="book-a-table section">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <p><span>Select your</span> <span class="description-title">Seats<br></span></p>
+    </div>
+
+    <div class="container">
+        <form id="tableBookingForm" method="POST" action="">
+            {% csrf_token %}
+            <div class="table-grid">
+                {% for table in tables %}
+                    {% if table.table_name in booked_tables %}
+                        <!-- Table is already booked for the selected date and time -->
+                        <div class="table booked">{{ table.table_name }}</div>
+                    {% else %}
+                        <!-- Table is available for booking -->
+                        <div class="table available" data-table="{{ table.table_name }}">{{ table.table_name }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <p>* Each Table With 4 Seats</p>
+
+            <div class="selected-tables">
+                <h3>Selected Tables:</h3>
+                <ul id="selectedTablesList">
+                    <!-- Selected tables will appear here -->
+                </ul>
+            </div>
+
+            <input type="hidden" id="selectedTablesInput" name="selected_tables" value="">
+
+            <button class="submit-btn" id="submitBtn" type="submit" disabled>Confirm Reservation</button>
+        </form>
+
+        <a href="{% url 'shop:home' %}"><button class="cancel-btn mt-3">Cancel</button></a>
+
+        <div class="info">
+            <i class="fa-solid fa-square" style="color: #28a745;">: Available </i>
+            <i class="fa-solid fa-square" style="color: #007bff;">: Selected </i>
+            <i class="fa-solid fa-square" style="color: #e3342f;">: Booked</i>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const availableTables = document.querySelectorAll('.available');
+                const selectedTablesList = document.getElementById('selectedTablesList');
+                const selectedTablesInput = document.getElementById('selectedTablesInput');
+                const submitBtn = document.getElementById('submitBtn');
+                let selectedTables = [];
+
+                // Toggle selection of tables
+                availableTables.forEach(table => {
+                    table.addEventListener('click', function() {
+                        const tableData = this.getAttribute('data-table');
+
+                        if (this.classList.contains('selected')) {
+                            // Deselect the table
+                            this.classList.remove('selected');
+                            selectedTables = selectedTables.filter(item => item !== tableData);
+                        } else {
+                            // Select the table
+                            this.classList.add('selected');
+                            selectedTables.push(tableData);
+                        }
+
+                        updateSelectedTablesList();
+                        toggleSubmitButton();
+                    });
+                });
+
+                // Update the list of selected tables
+                function updateSelectedTablesList() {
+                    selectedTablesList.innerHTML = '';
+                    selectedTables.forEach(table => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = table;
+                        selectedTablesList.appendChild(listItem);
+                    });
+                    // Update hidden input value
+                    selectedTablesInput.value = selectedTables.join(',');
+                }
+
+                // Enable/Disable submit button based on selected tables
+                function toggleSubmitButton() {
+                    if (selectedTables.length > 0) {
+                        submitBtn.disabled = false;
+                    } else {
+                        submitBtn.disabled = true;
+                    }
+                }
+
+                // Call the toggleSubmitButton function to ensure button state is correct on page load
+                toggleSubmitButton();
+            });
+        </script>
+    </div>
+</section>
 
 
 
@@ -222,216 +432,6 @@
 
 
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        padding: 20px;
-    }
-
-    .booking-container {
-        max-width: 800px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .table-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .table {
-        padding: 20px;
-        text-align: center;
-        background-color: #f9f9f9;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .table.available:hover {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .table.selected {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .table.booked {
-        background-color: #e3342f;
-        color: white;
-        cursor: not-allowed;
-    }
-
-    .submit-btn {
-        width: 100%;
-        padding: 10px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .submit-btn:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
-    }
-
-    .cancel-btn {
-        width: 100%;
-        padding: 10px;
-        background-color: #e81610;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .cancel-btn:hover {
-        background-color: #ab322e;
-    }
-
-    .selected-tables {
-        margin-top: 20px;
-    }
-
-    .selected-tables ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .selected-tables ul li {
-        background-color: #007bff;
-        color: white;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 4px;
-    }
-
-    .selected-tables h3 {
-        margin-bottom: 10px;
-    }
-
-    .info {
-        text-align: center;
-        font-size: 14px;
-        margin-top: 10px;
-    }
-</style>
-
-<section id="book-a-table" class="book-a-table section">
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <p><span>Select your</span> <span class="description-title">Seats<br></span></p>
-    </div>
-
-    <div class="container">
-        <form id="tableBookingForm" method="POST" action="">
-            {% csrf_token %}
-            <div class="table-grid">
-                {% for table in tables %}
-                    {% if table.table_name in booked_tables %}
-                        <!-- Table is already booked for the selected date and time -->
-                        <div class="table booked">{{ table.table_name }}</div>
-                    {% else %}
-                        <!-- Table is available for booking -->
-                        <div class="table available" data-table="{{ table.table_name }}">{{ table.table_name }}</div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <p>* Each Table With 4 Seats</p>
-
-            <div class="selected-tables">
-                <h3>Selected Tables:</h3>
-                <ul id="selectedTablesList">
-                    <!-- Selected tables will appear here -->
-                </ul>
-            </div>
-
-            <input type="hidden" id="selectedTablesInput" name="selected_tables" value="">
-
-            <button class="submit-btn" id="submitBtn" type="submit" disabled>Confirm Reservation</button>
-        </form>
-
-        <a href="{% url 'shop:home' %}"><button class="cancel-btn mt-3">Cancel</button></a>
-
-        <div class="info">
-            <i class="fa-solid fa-square" style="color: #28a745;">: Available </i>
-            <i class="fa-solid fa-square" style="color: #007bff;">: Selected </i>
-            <i class="fa-solid fa-square" style="color: #e3342f;">: Booked</i>
-        </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const availableTables = document.querySelectorAll('.available');
-                const selectedTablesList = document.getElementById('selectedTablesList');
-                const selectedTablesInput = document.getElementById('selectedTablesInput');
-                const submitBtn = document.getElementById('submitBtn');
-                let selectedTables = [];
-
-                // Toggle selection of tables
-                availableTables.forEach(table => {
-                    table.addEventListener('click', function() {
-                        const tableData = this.getAttribute('data-table');
-
-                        if (this.classList.contains('selected')) {
-                            // Deselect the table
-                            this.classList.remove('selected');
-                            selectedTables = selectedTables.filter(item => item !== tableData);
-                        } else {
-                            // Select the table
-                            this.classList.add('selected');
-                            selectedTables.push(tableData);
-                        }
-
-                        updateSelectedTablesList();
-                        toggleSubmitButton();
-                    });
-                });
-
-                // Update the list of selected tables
-                function updateSelectedTablesList() {
-                    selectedTablesList.innerHTML = '';
-                    selectedTables.forEach(table => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = table;
-                        selectedTablesList.appendChild(listItem);
-                    });
-                    // Update hidden input value
-                    selectedTablesInput.value = selectedTables.join(',');
-                }
-
-                // Enable/Disable submit button based on selected tables
-                function toggleSubmitButton() {
-                    if (selectedTables.length > 0) {
-                        submitBtn.disabled = false;
-                    } else {
-                        submitBtn.disabled = true;
-                    }
-                }
-
-                // Call the toggleSubmitButton function to ensure button state is correct on page load
-                toggleSubmitButton();
-            });
-        </script>
-    </div>
-</section>
 
 
 
