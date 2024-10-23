@@ -15,7 +15,7 @@ def home(request):
 
 
 def menu(request):
-    d = Dish.objects.all()
+    d = Dish.objects.filter(available=True)
     return render(request, 'menu.html', {'dish': d})
 
 
